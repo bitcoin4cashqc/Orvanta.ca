@@ -244,9 +244,21 @@ h2 {
   text-align: center;
 }
 
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.contact-form-wrapper {
+  text-align: left;
+}
+
 form {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
 }
 
 input, textarea {
@@ -277,6 +289,49 @@ button {
 button:hover {
   background: var(--accent);
   color: #000;
+}
+
+.contact-profile {
+  text-align: left;
+}
+
+.profile-image {
+  max-width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+
+.profile-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+
+.profile-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.profile-name {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 16px;
+  line-height: 1em;
+}
+
+.profile-bio {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 /* ---------- Footer ---------- */
@@ -340,6 +395,15 @@ section::before {
 
   .hero-cta {
     padding-bottom: 20px;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
   }
 }
 
