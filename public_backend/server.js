@@ -52,15 +52,15 @@ transporter.verify(function(error, success) {
   }
 });
 
-// MongoDB Connection
+// MongoDB Connection (optional - only needed for mandat submissions)
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
   .then(() => console.log('✓ Connecté à MongoDB'))
   .catch(err => {
-    console.error('✗ Erreur de connexion MongoDB:', err);
-    process.exit(1);
+    console.warn('⚠️  MongoDB non disponible:', err.message);
+    console.warn('⚠️  Le formulaire de contact fonctionnera, mais pas les soumissions de mandat');
   });
 
 // Mongoose Schema for Mandat
@@ -100,6 +100,14 @@ const Mandat = mongoose.model('Mandat', mandatSchema);
 // POST endpoint - Store encrypted mandat data
 app.post('/api/submit-mandat', async (req, res) => {
   try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        error: 'Service non disponible',
+        message: 'La base de données n\'est pas disponible. Veuillez réessayer plus tard.'
+      });
+    }
+
     const { uuid, encryptedData, signature } = req.body;
 
     // Validation
