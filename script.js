@@ -16,8 +16,12 @@ document.getElementById("contactForm").addEventListener("submit", async function
     submitButton.disabled = true;
     submitButton.textContent = 'Envoi en cours...';
 
-    // Send to backend
-    const response = await fetch('http://localhost:3000/api/contact', {
+    // Send to backend (use relative URL to work on any domain)
+    const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3000/api/contact'
+      : '/api/contact';
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -53,10 +53,7 @@ transporter.verify(function(error, success) {
 });
 
 // MongoDB Connection (optional - only needed for mandat submissions)
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✓ Connecté à MongoDB'))
   .catch(err => {
     console.warn('⚠️  MongoDB non disponible:', err.message);

@@ -164,8 +164,12 @@ document.getElementById('mandatForm').addEventListener('submit', async function(
     console.log('\nDonnées chiffrées (PGP):\n', encryptedFormData);
     console.log('\nSignature (base64, non chiffrée - premiers 100 caractères):', signatureData.substring(0, 100) + '...');
 
-    // Send to backend endpoint
-    const response = await fetch('http://localhost:3000/api/submit-mandat', {
+    // Send to backend endpoint (use relative URL to work on any domain)
+    const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3000/api/submit-mandat'
+      : '/api/submit-mandat';
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
