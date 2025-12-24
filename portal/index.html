@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portail Client — Orvanta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Formulaire de mandat client Orvanta" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <nav class="nav">
+      <div class="brand">Orvanta</div>
+      <div class="nav-links">
+        <a href="../index.html">Accueil</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="portal-container">
+    <div class="portal-header">
+      <h1>Formulaire de Mandat Client</h1>
+      <p>Veuillez remplir tous les champs requis ci-dessous</p>
+    </div>
+
+    <!-- Data Privacy Accordion -->
+    <div class="privacy-accordion">
+      <button type="button" class="accordion-trigger" id="privacyAccordion">
+        <span>Comment protégeons-nous vos données ?</span>
+        <span class="accordion-icon">▼</span>
+      </button>
+      <div class="accordion-content" id="privacyContent">
+        <div class="accordion-body">
+          <h4>Protection de vos données personnelles</h4>
+
+          <p>
+            Chez Orvanta, la confidentialité et la sécurité de vos informations personnelles sont notre priorité absolue.
+            Toutes les données que vous soumettez via ce formulaire sont <strong>chiffrées de bout en bout</strong>
+            à l'aide du protocole <strong>PGP (Pretty Good Privacy)</strong>.
+          </p>
+
+          <h4>Qu'est-ce que le chiffrement PGP ?</h4>
+
+          <p>
+            PGP est un système de chiffrement asymétrique qui utilise une paire de clés : une clé publique
+            (utilisée pour chiffrer) et une clé privée (utilisée pour déchiffrer). Lorsque vous soumettez ce
+            formulaire, vos données sont automatiquement chiffrées dans votre navigateur avec notre clé publique.
+            Une fois chiffrées, <strong>seul Orvanta peut les déchiffrer</strong> avec notre clé privée, qui reste
+            strictement confidentielle.
+          </p>
+
+          <p>
+            Cela signifie que même si les données étaient interceptées durant leur transmission, elles seraient
+            totalement illisibles sans notre clé privée.
+          </p>
+
+          <h4>En savoir plus sur PGP</h4>
+
+          <p>
+            Pour comprendre davantage le fonctionnement de PGP et son importance pour la sécurité :
+          </p>
+          <ul>
+            <li><a href="https://fr.wikipedia.org/wiki/Pretty_Good_Privacy" target="_blank" rel="noopener noreferrer">PGP sur Wikipédia (français)</a></li>
+            <li><a href="https://www.openpgp.org/about/" target="_blank" rel="noopener noreferrer">OpenPGP - Standard ouvert (anglais)</a></li>
+            <li><a href="https://emailselfdefense.fsf.org/fr/" target="_blank" rel="noopener noreferrer">Guide d'autodéfense numérique - FSF</a></li>
+          </ul>
+
+          <h4>Notre clé publique PGP</h4>
+
+          <p>
+            Pour une transparence totale, voici notre clé publique PGP utilisée pour chiffrer vos données.
+            Vous pouvez la vérifier ou l'utiliser pour nous envoyer des messages chiffrés.
+          </p>
+
+          <div class="pgp-key-display">
+            <strong>Empreinte (Fingerprint) :</strong> B752446A4882CE5051722385D1E7F6C6F5F074
+          </div>
+
+          <details class="pgp-key-details">
+            <summary>Afficher la clé publique complète</summary>
+            <pre id="pgpKeyContent" class="pgp-key-block">Chargement de la clé...</pre>
+          </details>
+
+          <h4>Vos droits</h4>
+
+          <p>
+            Conformément aux lois sur la protection des données, vous disposez d'un droit d'accès, de rectification
+            et de suppression de vos données personnelles. Pour toute demande, contactez-nous à
+            <a href="mailto:samuel@orvanta.ca">samuel@orvanta.ca</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <form id="mandatForm">
+      <!-- Section Identification -->
+      <div class="form-section">
+        <h3>Identification</h3>
+
+        <div class="form-row full-width">
+          <div>
+            <label for="numRevenuQuebec">Numéro d'identification (Revenu Québec - 10 chiffres) *</label>
+            <input
+              type="text"
+              id="numRevenuQuebec"
+              name="numRevenuQuebec"
+              pattern="[0-9]{10}"
+              maxlength="10"
+              placeholder="1234567890"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="nom">Nom de famille *</label>
+            <input type="text" id="nom" name="nom" required />
+          </div>
+          <div>
+            <label for="prenom">Prénom *</label>
+            <input type="text" id="prenom" name="prenom" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="dateNaissance">Date de naissance *</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" required />
+          </div>
+          <div>
+            <label for="nas">Numéro d'assurance sociale (NAS) *</label>
+            <input
+              type="text"
+              id="nas"
+              name="nas"
+              pattern="[0-9]{9}"
+              maxlength="9"
+              placeholder="123456789"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Adresse -->
+      <div class="form-section">
+        <h3>Adresse</h3>
+
+        <div class="form-row">
+          <div>
+            <label for="appartement">Appartement</label>
+            <input type="text" id="appartement" name="appartement" />
+          </div>
+          <div>
+            <label for="numeroCivique">Numéro civique *</label>
+            <input type="text" id="numeroCivique" name="numeroCivique" required />
+          </div>
+        </div>
+
+        <div class="form-row full-width">
+          <div>
+            <label for="nomRue">Nom de la rue *</label>
+            <input type="text" id="nomRue" name="nomRue" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="ville">Ville, village ou municipalité *</label>
+            <input type="text" id="ville" name="ville" required />
+          </div>
+          <div>
+            <label for="province">Province *</label>
+            <select id="province" name="province" required>
+              <option value="">Sélectionner...</option>
+              <option value="QC">Québec</option>
+              <option value="ON">Ontario</option>
+              <option value="BC">Colombie-Britannique</option>
+              <option value="AB">Alberta</option>
+              <option value="MB">Manitoba</option>
+              <option value="SK">Saskatchewan</option>
+              <option value="NS">Nouvelle-Écosse</option>
+              <option value="NB">Nouveau-Brunswick</option>
+              <option value="PE">Île-du-Prince-Édouard</option>
+              <option value="NL">Terre-Neuve-et-Labrador</option>
+              <option value="YT">Yukon</option>
+              <option value="NT">Territoires du Nord-Ouest</option>
+              <option value="NU">Nunavut</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="codePostal">Code postal *</label>
+            <input
+              type="text"
+              id="codePostal"
+              name="codePostal"
+              pattern="[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]"
+              placeholder="H1A 1A1"
+              required
+            />
+          </div>
+          <div>
+            <label for="pays">Pays *</label>
+            <input type="text" id="pays" name="pays" value="Canada" required />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Contact -->
+      <div class="form-section">
+        <h3>Coordonnées</h3>
+
+        <div class="form-row">
+          <div>
+            <label for="telephone">Téléphone *</label>
+            <input
+              type="tel"
+              id="telephone"
+              name="telephone"
+              placeholder="(555) 555-5555"
+              required
+            />
+          </div>
+          <div>
+            <label for="telephoneCellulaire">Téléphone cellulaire</label>
+            <input
+              type="tel"
+              id="telephoneCellulaire"
+              name="telephoneCellulaire"
+              placeholder="(555) 555-5555"
+            />
+          </div>
+        </div>
+
+        <div class="form-row full-width">
+          <div>
+            <label for="courriel">Courriel *</label>
+            <input type="email" id="courriel" name="courriel" required />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Faillite -->
+      <div class="form-section">
+        <h3>Déclaration de Faillite</h3>
+
+        <div class="checkbox-wrapper">
+          <input
+            type="checkbox"
+            id="faillite"
+            name="faillite"
+            value="oui"
+          />
+          <label for="faillite">Êtes-vous actuellement en faillite ou l'avez-vous déjà été par le passé ?</label>
+        </div>
+      </div>
+
+      <!-- Section Signature -->
+      <div class="form-section">
+        <h3>Signature Virtuelle</h3>
+
+        <div class="signature-container">
+          <label>Veuillez signer dans la zone ci-dessous *</label>
+          <div class="signature-pad-wrapper">
+            <canvas id="signature-pad"></canvas>
+          </div>
+          <div class="signature-controls">
+            <button type="button" class="btn-clear" id="clearSignature">Effacer la signature</button>
+          </div>
+        </div>
+
+        <button type="submit">Soumettre le Formulaire</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Signature Pad Library -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <!-- OpenPGP.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/openpgp@5.11.1/dist/openpgp.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

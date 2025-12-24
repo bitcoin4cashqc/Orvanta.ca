@@ -1,0 +1,295 @@
+body {
+  padding-top: 80px;
+}
+
+.portal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.portal-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.portal-header h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.portal-header p {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+/* Privacy Accordion */
+.privacy-accordion {
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.accordion-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.accordion-trigger:hover {
+  background: rgba(201, 162, 77, 0.1);
+  color: var(--accent);
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.accordion-trigger.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.accordion-content.open {
+  max-height: 2000px;
+}
+
+.accordion-body {
+  padding: 0 24px 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.accordion-body h4 {
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 24px 0 12px;
+}
+
+.accordion-body h4:first-child {
+  margin-top: 0;
+}
+
+.accordion-body p {
+  margin-bottom: 16px;
+}
+
+.accordion-body ul {
+  margin: 12px 0 16px 20px;
+  list-style-type: disc;
+}
+
+.accordion-body li {
+  margin-bottom: 8px;
+}
+
+.accordion-body a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.accordion-body a:hover {
+  color: var(--text);
+}
+
+.pgp-key-display {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.pgp-key-details {
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.pgp-key-details summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--accent);
+  user-select: none;
+}
+
+.pgp-key-details summary:hover {
+  background: rgba(201, 162, 77, 0.1);
+}
+
+.pgp-key-block {
+  background: var(--bg);
+  color: var(--text);
+  padding: 16px;
+  margin: 0;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.form-section {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.form-section h3 {
+  color: var(--accent);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row.full-width {
+  grid-template-columns: 1fr;
+}
+
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.checkbox-wrapper label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.signature-container {
+  margin-top: 24px;
+}
+
+.signature-pad-wrapper {
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  margin-top: 12px;
+  position: relative;
+}
+
+#signature-pad {
+  width: 100%;
+  height: 200px;
+  display: block;
+}
+
+.signature-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+.btn-clear:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+button[type="submit"] {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 14px 28px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+  margin-top: 24px;
+}
+
+button[type="submit"]:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    padding: 24px;
+  }
+}
