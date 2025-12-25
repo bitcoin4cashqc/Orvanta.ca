@@ -239,7 +239,7 @@ Envoyé le ${new Date().toLocaleString('fr-CA')}
     ${message ? `
     <div style="margin-top: 30px;">
       <h3 style="color: #0b0d10;">Message:</h3>
-      <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d; white-space: pre-wrap;">${message}</div>
+      <div id="pgp" style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d; white-space: pre-wrap;">${message}</div>
     </div>
     ` : ''}
 
