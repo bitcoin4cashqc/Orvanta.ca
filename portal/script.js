@@ -60,6 +60,12 @@ function convertSignatureToTransparentBlack() {
   // Get the signature data points
   const data = signaturePad.toData();
 
+  // Modify the data to change the color from gold to black
+  const blackData = data.map(stroke => ({
+    ...stroke,
+    penColor: '#000000'
+  }));
+
   // Create a new signature pad on the temporary canvas with black color and transparent background
   const tempSignaturePad = new SignaturePad(tempCanvas, {
     backgroundColor: 'rgba(0,0,0,0)', // Transparent background
@@ -67,7 +73,7 @@ function convertSignatureToTransparentBlack() {
   });
 
   // Redraw the signature in black
-  tempSignaturePad.fromData(data);
+  tempSignaturePad.fromData(blackData);
 
   // Return the black signature with transparent background as PNG base64
   return tempSignaturePad.toDataURL('image/png');
