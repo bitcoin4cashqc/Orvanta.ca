@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 
@@ -52,59 +51,9 @@ transporter.verify(function(error, success) {
   }
 });
 
-// MongoDB Connection (optional - only needed for mandat submissions)
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✓ Connecté à MongoDB'))
-  .catch(err => {
-    console.warn('⚠️  MongoDB non disponible:', err.message);
-    console.warn('⚠️  Le formulaire de contact fonctionnera, mais pas les soumissions de mandat');
-  });
-
-// Mongoose Schema for Mandat
-const mandatSchema = new mongoose.Schema({
-  uuid: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true
-  },
-  encryptedData: {
-    type: String,
-    required: true
-  },
-  signature: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-// Update the updatedAt field on save
-mandatSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
-const Mandat = mongoose.model('Mandat', mandatSchema);
-
-// POST endpoint - Store encrypted mandat data
+// POST endpoint - Submit mandat and send email
 app.post('/api/submit-mandat', async (req, res) => {
   try {
-    // Check if MongoDB is connected
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({
-        error: 'Service non disponible',
-        message: 'La base de données n\'est pas disponible. Veuillez réessayer plus tard.'
-      });
-    }
-
     const { uuid, encryptedData, signature } = req.body;
 
     // Validation
@@ -116,17 +65,6 @@ app.post('/api/submit-mandat', async (req, res) => {
     }
 
     console.log(`📝 Réception mandat - UUID: ${uuid}`);
-
-    // Create new mandat (no updates allowed)
-    const newMandat = new Mandat({
-      uuid,
-      encryptedData,
-      signature
-    });
-
-    await newMandat.save();
-
-    console.log(`✓ Nouveau mandat créé - UUID: ${uuid}`);
 
     // Convert base64 signature to buffer for email attachment
     const signatureBuffer = Buffer.from(signature.split(',')[1], 'base64');
@@ -217,30 +155,26 @@ Envoyé le ${new Date().toLocaleString('fr-CA')}
 
       await transporter.sendMail(mandatMailOptions);
       console.log(`✓ Email de notification envoyé depuis ${process.env.MANDAT_MAIL_FROM || 'manda@orvanta.ca'}`);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Mandat soumis avec succès',
+        uuid: uuid
+      });
+
     } catch (emailError) {
-      console.error('⚠️  Erreur lors de l\'envoi de l\'email de notification:', emailError);
-      // Continue even if email fails - mandat is already saved
-    }
-
-    return res.status(201).json({
-      success: true,
-      message: 'Mandat enregistré avec succès',
-      uuid: uuid
-    });
-
-  } catch (error) {
-    console.error('✗ Erreur lors de l\'enregistrement:', error);
-
-    if (error.code === 11000) {
-      return res.status(409).json({
-        error: 'Conflit',
-        message: 'Ce mandat existe déjà'
+      console.error('⚠️  Erreur lors de l\'envoi de l\'email:', emailError);
+      return res.status(500).json({
+        error: 'Erreur serveur',
+        message: 'Erreur lors de l\'envoi du mandat'
       });
     }
 
+  } catch (error) {
+    console.error('✗ Erreur lors du traitement:', error);
     res.status(500).json({
       error: 'Erreur serveur',
-      message: 'Erreur lors de l\'enregistrement du mandat'
+      message: 'Erreur lors du traitement du mandat'
     });
   }
 });
@@ -340,13 +274,12 @@ Envoyé le ${new Date().toLocaleString('fr-CA')}
 app.listen(PORT, () => {
   console.log(`\n🚀 Serveur démarré sur le port ${PORT}`);
   console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`);
-  console.log(`📝 Submit endpoint: http://localhost:${PORT}/api/submit-mandat`);
+  console.log(`📝 Mandat endpoint: http://localhost:${PORT}/api/submit-mandat`);
   console.log(`🔒 Origines autorisées: ${allowedOrigins.join(', ')}\n`);
 });
 
 // Graceful shutdown
-process.on('SIGINT', async () => {
+process.on('SIGINT', () => {
   console.log('\n🛑 Arrêt du serveur...');
-  await mongoose.connection.close();
   process.exit(0);
 });
