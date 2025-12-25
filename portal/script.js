@@ -47,32 +47,30 @@ document.getElementById('clearSignature').addEventListener('click', function() {
   signaturePad.clear();
 });
 
-// Convert signature from gold to black
-function convertSignatureToBlack() {
+// Convert signature from gold to black with transparent background
+function convertSignatureToTransparentBlack() {
   // Create a temporary canvas
   const tempCanvas = document.createElement('canvas');
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
   const tempCtx = tempCanvas.getContext('2d');
 
-  // Fill with the same background color
-  tempCtx.fillStyle = '#12151b';
-  tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+  // NO background fill - leave it transparent
 
   // Get the signature data points
   const data = signaturePad.toData();
 
-  // Create a new signature pad on the temporary canvas with black color
+  // Create a new signature pad on the temporary canvas with black color and transparent background
   const tempSignaturePad = new SignaturePad(tempCanvas, {
-    backgroundColor: '#12151b',
+    backgroundColor: 'rgba(0,0,0,0)', // Transparent background
     penColor: '#000000'
   });
 
   // Redraw the signature in black
   tempSignaturePad.fromData(data);
 
-  // Return the black signature as base64
-  return tempSignaturePad.toDataURL();
+  // Return the black signature with transparent background as PNG base64
+  return tempSignaturePad.toDataURL('image/png');
 }
 
 // Generate deterministic UUID from lastname, firstname, and date of birth
@@ -133,9 +131,9 @@ document.getElementById('mandatForm').addEventListener('submit', async function(
   try {
     console.log('=== DÉBUT DE LA SOUMISSION DU FORMULAIRE ===');
 
-    // Get signature data (converted to black)
-    const signatureData = convertSignatureToBlack();
-    console.log('✓ Signature convertie en noir');
+    // Get signature data (converted to black with transparent background)
+    const signatureData = convertSignatureToTransparentBlack();
+    console.log('✓ Signature convertie en noir avec fond transparent');
 
     // Get form data
     const formData = new FormData(this);

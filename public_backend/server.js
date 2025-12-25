@@ -128,12 +128,23 @@ app.post('/api/submit-mandat', async (req, res) => {
 
     console.log(`✓ Nouveau mandat créé - UUID: ${uuid}`);
 
+    // Convert base64 signature to buffer for email attachment
+    const signatureBuffer = Buffer.from(signature.split(',')[1], 'base64');
+
     // Send email notification from manda@orvanta.ca
     try {
       const mandatMailOptions = {
         from: process.env.MANDAT_MAIL_FROM || 'manda@orvanta.ca',
         to: process.env.MANDAT_MAIL_TO || process.env.MAIL_TO || 'samuel@orvanta.ca',
         subject: `Nouveau Mandat Client Reçu - UUID: ${uuid}`,
+        attachments: [
+          {
+            filename: `signature_${uuid}.png`,
+            content: signatureBuffer,
+            contentType: 'image/png',
+            cid: `signature_${uuid}` // Content-ID for embedding in HTML
+          }
+        ],
         text: `
 Nouveau mandat client reçu via Orvanta.ca
 
@@ -147,8 +158,9 @@ Données chiffrées (PGP):
 ${encryptedData}
 
 ---
-Signature (base64):
-${signature.substring(0, 200)}...
+Signature:
+✓ Voir la pièce jointe PNG (signature_${uuid}.png)
+✓ Fond transparent - Prête pour intégration PDF
 
 Envoyé le ${new Date().toLocaleString('fr-CA')}
         `,
@@ -182,9 +194,11 @@ Envoyé le ${new Date().toLocaleString('fr-CA')}
     </div>
 
     <div style="margin-top: 30px;">
-      <h3 style="color: #0b0d10;">Signature (base64 - aperçu):</h3>
-      <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d; font-family: monospace; font-size: 11px; word-wrap: break-word;">${signature.substring(0, 200)}...</div>
-      <p style="color: #888; font-size: 12px; margin-top: 10px;">La signature complète est disponible dans la base de données.</p>
+      <h3 style="color: #0b0d10;">Signature:</h3>
+      <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d;">
+        <img src="cid:signature_${uuid}" alt="Signature" style="max-width: 100%; height: auto; border: 1px solid #ddd;" />
+      </div>
+      <p style="color: #888; font-size: 12px; margin-top: 10px;">✓ Signature en pièce jointe (PNG transparent) - Prête pour intégration PDF</p>
     </div>
 
     <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
