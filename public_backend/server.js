@@ -127,6 +127,87 @@ app.post('/api/submit-mandat', async (req, res) => {
     await newMandat.save();
 
     console.log(`✓ Nouveau mandat créé - UUID: ${uuid}`);
+
+    // Send email notification from manda@orvanta.ca
+    try {
+      const mandatMailOptions = {
+        from: process.env.MANDAT_MAIL_FROM || 'manda@orvanta.ca',
+        to: process.env.MANDAT_MAIL_TO || process.env.MAIL_TO || 'samuel@orvanta.ca',
+        subject: `Nouveau Mandat Client Reçu - UUID: ${uuid}`,
+        text: `
+Nouveau mandat client reçu via Orvanta.ca
+
+UUID: ${uuid}
+Date de réception: ${new Date().toLocaleString('fr-CA')}
+
+Les données chiffrées PGP et la signature sont disponibles dans la base de données.
+
+---
+Données chiffrées (PGP):
+${encryptedData}
+
+---
+Signature (base64):
+${signature.substring(0, 200)}...
+
+Envoyé le ${new Date().toLocaleString('fr-CA')}
+        `,
+        html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
+  <div style="background-color: #0b0d10; color: #c9a24d; padding: 20px; text-align: center;">
+    <h2 style="margin: 0;">Nouveau Mandat Client - Orvanta</h2>
+  </div>
+
+  <div style="background-color: white; padding: 30px; margin-top: 20px; border: 1px solid #ddd;">
+    <h3 style="color: #0b0d10; margin-top: 0;">Informations du mandat</h3>
+
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px 0; font-weight: bold; color: #555;">UUID:</td>
+        <td style="padding: 10px 0; font-family: monospace;">${uuid}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px 0; font-weight: bold; color: #555;">Date de réception:</td>
+        <td style="padding: 10px 0;">${new Date().toLocaleString('fr-CA')}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px 0; font-weight: bold; color: #555;">Statut:</td>
+        <td style="padding: 10px 0;"><span style="background-color: #4CAF50; color: white; padding: 5px 10px; border-radius: 3px;">Enregistré</span></td>
+      </tr>
+    </table>
+
+    <div style="margin-top: 30px;">
+      <h3 style="color: #0b0d10;">Données chiffrées (PGP):</h3>
+      <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d; font-family: monospace; font-size: 11px; max-height: 300px; overflow-y: auto; word-wrap: break-word;">${encryptedData}</div>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <h3 style="color: #0b0d10;">Signature (base64 - aperçu):</h3>
+      <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #c9a24d; font-family: monospace; font-size: 11px; word-wrap: break-word;">${signature.substring(0, 200)}...</div>
+      <p style="color: #888; font-size: 12px; margin-top: 10px;">La signature complète est disponible dans la base de données.</p>
+    </div>
+
+    <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+      <p style="margin: 0; color: #856404;">
+        <strong>Note:</strong> Les données du formulaire sont chiffrées avec PGP. Utilisez votre clé privée pour les déchiffrer.
+      </p>
+    </div>
+
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #888; font-size: 12px;">
+      <p>Envoyé le ${new Date().toLocaleString('fr-CA')}</p>
+    </div>
+  </div>
+</div>
+        `
+      };
+
+      await transporter.sendMail(mandatMailOptions);
+      console.log(`✓ Email de notification envoyé depuis ${process.env.MANDAT_MAIL_FROM || 'manda@orvanta.ca'}`);
+    } catch (emailError) {
+      console.error('⚠️  Erreur lors de l\'envoi de l\'email de notification:', emailError);
+      // Continue even if email fails - mandat is already saved
+    }
+
     return res.status(201).json({
       success: true,
       message: 'Mandat enregistré avec succès',
