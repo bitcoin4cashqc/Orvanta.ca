@@ -12,23 +12,32 @@ body {
   margin-bottom: 40px;
 }
 
+/* Top Section - Logo and Header */
+.contract-top {
+  display: grid;
+  grid-template-columns: 3fr 9fr;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--accent);
+  align-items: center;
+}
+
 /* Logo */
 .contract-logo {
-  text-align: center;
-  margin-bottom: 40px;
-  padding-bottom: 30px;
-  border-bottom: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contract-logo img {
-  max-width: 200px;
+  max-width: 150px;
   height: auto;
 }
 
 /* Header */
 .contract-header {
-  text-align: center;
-  margin-bottom: 50px;
+  text-align: left;
 }
 
 .contract-header h1 {
@@ -111,7 +120,7 @@ body {
 }
 
 .contract-section {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .contract-section h2 {
@@ -160,11 +169,11 @@ body {
 .closing-statement {
   font-style: italic;
   color: var(--muted);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .signature-display-block {
-  margin: 40px 0;
+  margin: 20px 0;
   padding: 24px;
   background: var(--bg);
   border: 1px solid var(--border);
@@ -215,7 +224,7 @@ body {
 }
 
 .signature-block {
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: right;
 }
 
@@ -283,7 +292,12 @@ body {
 
   .contract-section {
     page-break-inside: avoid;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+  }
+
+  .contract-top {
+    grid-template-columns: 3fr 9fr;
+    border-bottom: 2px solid #333;
   }
 
   /* Adjust colors for print */
@@ -335,7 +349,11 @@ body {
 
   /* Logo sizing for print */
   .contract-logo img {
-    max-width: 180px;
+    max-width: 120px;
+  }
+
+  .contract-header {
+    text-align: left;
   }
 
   /* Font sizing adjustments for print */
@@ -359,6 +377,23 @@ body {
   .contract-container {
     padding: 30px 15px;
     margin-top: 10px;
+  }
+
+  .contract-top {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contract-logo {
+    justify-content: flex-start;
+  }
+
+  .contract-logo img {
+    max-width: 120px;
+  }
+
+  .contract-header {
+    text-align: left;
   }
 
   .contract-header h1 {
