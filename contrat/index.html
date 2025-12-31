@@ -92,6 +92,25 @@
         </p>
       </section>
 
+      <!-- Financial Summary Section -->
+      <section class="contract-section financial-section" id="financialSection" style="display: none;">
+        <h2>Résumé Financier</h2>
+        <div class="financial-table">
+          <div class="financial-row">
+            <span class="financial-label">Valeur totale des actifs :</span>
+            <span class="financial-value" id="totalAssets">0.00 $</span>
+          </div>
+          <div class="financial-row">
+            <span class="financial-label">Frais de service Orvanta (10% ou 100 $, selon le plus élevé) :</span>
+            <span class="financial-value fee" id="feeAmount">0.00 $</span>
+          </div>
+          <div class="financial-row total">
+            <span class="financial-label">Montant net à recevoir :</span>
+            <span class="financial-value total" id="netAmount">0.00 $</span>
+          </div>
+        </div>
+      </section>
+
       <section class="contract-section signature-section">
         <p class="closing-statement">
           Nous vous remercions de votre confiance et nous réjouissons de travailler avec vous pour
@@ -176,6 +195,21 @@
           img.className = 'signature-image';
           signatureDisplay.innerHTML = '';
           signatureDisplay.appendChild(img);
+        }
+
+        // Calculate and display financial summary
+        if (contractData.valeur && Array.isArray(contractData.valeur)) {
+          const totalAssets = contractData.valeur.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+          const fee = Math.max(totalAssets * 0.10, 100);
+          const netAmount = totalAssets - fee;
+
+          // Update the financial section
+          document.getElementById('totalAssets').textContent = totalAssets.toFixed(2) + ' $';
+          document.getElementById('feeAmount').textContent = fee.toFixed(2) + ' $';
+          document.getElementById('netAmount').textContent = netAmount.toFixed(2) + ' $';
+
+          // Show the financial section
+          document.getElementById('financialSection').style.display = 'block';
         }
 
       } catch (error) {

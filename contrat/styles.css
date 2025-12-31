@@ -161,6 +161,67 @@ body {
   border-left: 3px solid var(--accent);
 }
 
+/* Financial Section */
+.financial-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid var(--border);
+}
+
+.financial-table {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-left: 3px solid var(--accent);
+}
+
+.financial-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.financial-row:last-child {
+  border-bottom: none;
+}
+
+.financial-row.total {
+  margin-top: 10px;
+  padding-top: 18px;
+  border-top: 2px solid var(--accent);
+  font-size: 1.1rem;
+}
+
+.financial-label {
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.financial-value {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.financial-value.fee {
+  color: var(--accent);
+}
+
+.financial-value.total {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.financial-row.total .financial-label {
+  color: var(--text);
+  font-weight: 600;
+}
+
 /* Signature Section */
 .signature-section {
   margin-top: 60px;
@@ -323,13 +384,34 @@ body {
   }
 
   .contact-info,
-  .signature-display-block {
+  .signature-display-block,
+  .financial-table {
     background: #f5f5f5;
     border: 1px solid #333;
   }
 
-  .contact-info {
+  .contact-info,
+  .financial-table {
     border-left: 3px solid #333;
+  }
+
+  .financial-section {
+    border-top: 2px solid #333;
+  }
+
+  .financial-row {
+    border-bottom: 1px solid #333;
+  }
+
+  .financial-row.total {
+    border-top: 2px solid #333;
+  }
+
+  .financial-label,
+  .financial-value,
+  .financial-value.fee,
+  .financial-value.total {
+    color: #000 !important;
   }
 
   .signature-display {
@@ -406,5 +488,29 @@ body {
 
   .contract-body {
     padding: 0 10px;
+  }
+
+  .financial-table {
+    padding: 16px;
+  }
+
+  .financial-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 0;
+    gap: 6px;
+  }
+
+  .financial-label {
+    font-size: 0.9rem;
+  }
+
+  .financial-value {
+    font-size: 1.1rem;
+    align-self: flex-end;
+  }
+
+  .financial-value.total {
+    font-size: 1.2rem;
   }
 }
