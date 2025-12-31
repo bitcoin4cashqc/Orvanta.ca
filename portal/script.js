@@ -102,6 +102,93 @@ async function generateDeterministicUUID(nom, prenom, dateNaissance) {
   return uuid;
 }
 
+// Fetch assets from backend
+async function fetchAssets(uuid) {
+  try {
+    const response = await fetch(`https://n8n.orvanta.ca/webhook/portal?uuid=${uuid}`);
+
+    if (!response.ok) {
+      throw new Error('Impossible de récupérer les actifs');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des actifs:', error);
+    return null;
+  }
+}
+
+// Calculate total assets value from array like [{"valeur":0},{"valeur":0}]
+function calculateTotalAssets(assetsData) {
+  if (!assetsData || !Array.isArray(assetsData)) {
+    return 0;
+  }
+
+  return assetsData.reduce((total, asset) => {
+    return total + (parseFloat(asset.valeur) || 0);
+  }, 0);
+}
+
+// Calculate fee (10% or $100, whichever is greater)
+function calculateFee(totalAssets) {
+  const percentFee = totalAssets * 0.10;
+  return Math.max(percentFee, 100);
+}
+
+// Update assets display
+function updateAssetsDisplay(totalAssets, fee, netAmount) {
+  const assetsSection = document.getElementById('assetsSection');
+  const totalAssetsEl = document.getElementById('totalAssets');
+  const feeAmountEl = document.getElementById('feeAmount');
+  const netAmountEl = document.getElementById('netAmount');
+
+  if (assetsSection && totalAssetsEl && feeAmountEl && netAmountEl) {
+    totalAssetsEl.textContent = `${totalAssets.toFixed(2)} $`;
+    feeAmountEl.textContent = `${fee.toFixed(2)} $`;
+    netAmountEl.textContent = `${netAmount.toFixed(2)} $`;
+    assetsSection.style.display = 'block';
+  }
+}
+
+// Hide assets display
+function hideAssetsDisplay() {
+  const assetsSection = document.getElementById('assetsSection');
+  if (assetsSection) {
+    assetsSection.style.display = 'none';
+  }
+}
+
+// Check UUID fields and fetch assets
+async function checkUUIDFieldsAndFetchAssets() {
+  const nom = document.getElementById('nom').value.trim();
+  const prenom = document.getElementById('prenom').value.trim();
+  const dateNaissance = document.getElementById('dateNaissance').value.trim();
+
+  if (nom && prenom && dateNaissance) {
+    // Generate UUID
+    const uuid = await generateDeterministicUUID(nom, prenom, dateNaissance);
+    console.log('UUID généré:', uuid);
+
+    // Fetch assets
+    const assetsData = await fetchAssets(uuid);
+
+    if (assetsData && assetsData.length > 0) {
+      const totalAssets = calculateTotalAssets(assetsData);
+      const fee = calculateFee(totalAssets);
+      const netAmount = totalAssets - fee;
+
+      updateAssetsDisplay(totalAssets, fee, netAmount);
+      console.log('Actifs récupérés:', { totalAssets, fee, netAmount });
+    } else {
+      hideAssetsDisplay();
+      console.log('Aucun actif trouvé pour cet UUID');
+    }
+  } else {
+    hideAssetsDisplay();
+  }
+}
+
 // Encrypt data using PGP public key
 async function encryptData(data) {
   try {
@@ -221,4 +308,17 @@ if (accordionTrigger && accordionContent) {
 // Load PGP key on page load
 loadPGPKey().catch(error => {
   console.error('Échec du chargement de la clé PGP:', error);
+});
+
+// Add event listeners to UUID fields to auto-fetch assets
+document.addEventListener('DOMContentLoaded', function() {
+  const nomField = document.getElementById('nom');
+  const prenomField = document.getElementById('prenom');
+  const dateNaissanceField = document.getElementById('dateNaissance');
+
+  if (nomField && prenomField && dateNaissanceField) {
+    nomField.addEventListener('input', checkUUIDFieldsAndFetchAssets);
+    prenomField.addEventListener('input', checkUUIDFieldsAndFetchAssets);
+    dateNaissanceField.addEventListener('change', checkUUIDFieldsAndFetchAssets);
+  }
 });

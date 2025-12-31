@@ -227,6 +227,48 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
+/* Assets Summary */
+.assets-summary {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.assets-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.assets-row:last-child {
+  border-bottom: none;
+}
+
+.assets-row.assets-total {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 2px solid var(--accent);
+}
+
+.assets-label {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.assets-value {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-family: 'Courier New', monospace;
+}
+
+.assets-total .assets-label,
+.assets-total .assets-value {
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
 .signature-container {
   margin-top: 24px;
 }
