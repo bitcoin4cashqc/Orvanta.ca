@@ -173,6 +173,8 @@ body {
   background: var(--bg);
   border: 1px solid var(--border);
   padding: 20px;
+  margin-top: 16px;
+  border-left: 3px solid var(--accent);
 }
 
 .assets-row {
@@ -376,6 +378,11 @@ body {
   .assets-summary {
     background: #f5f5f5;
     border: 1px solid #333;
+  }
+
+  .contact-info,
+  .assets-summary {
+    border-left: 3px solid #333;
   }
 
   .financial-section {
