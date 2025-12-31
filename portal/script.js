@@ -1,6 +1,9 @@
 // PGP Public Key - will be loaded from file
 let PGP_PUBLIC_KEY = null;
 
+// Store asset amounts for email
+let assetAmounts = null;
+
 // Load PGP Public Key from file
 async function loadPGPKey() {
   try {
@@ -178,14 +181,23 @@ async function checkUUIDFieldsAndFetchAssets() {
       const fee = calculateFee(totalAssets);
       const netAmount = totalAssets - fee;
 
+      // Store amounts for email
+      assetAmounts = {
+        totalAssets: totalAssets,
+        fee: fee,
+        netAmount: netAmount
+      };
+
       updateAssetsDisplay(totalAssets, fee, netAmount);
       console.log('Actifs récupérés:', { totalAssets, fee, netAmount });
     } else {
       hideAssetsDisplay();
+      assetAmounts = null;
       console.log('Aucun actif trouvé pour cet UUID');
     }
   } else {
     hideAssetsDisplay();
+    assetAmounts = null;
   }
 }
 
@@ -242,11 +254,12 @@ document.getElementById('mandatForm').addEventListener('submit', async function(
     const encryptedFormData = await encryptData(data);
     console.log('✓ Données chiffrées avec succès');
 
-    // Prepare payload with encrypted data, signature, and UUID
+    // Prepare payload with encrypted data, signature, UUID, and asset amounts
     const payload = {
       uuid: uuid,
       encryptedData: encryptedFormData,
-      signature: signatureData
+      signature: signatureData,
+      amounts: assetAmounts
     };
 
     console.log('\n=== DONNÉES FINALES ===');

@@ -54,7 +54,7 @@ transporter.verify(function(error, success) {
 // POST endpoint - Submit mandat and send email
 app.post('/api/submit-mandat', async (req, res) => {
   try {
-    const { uuid, encryptedData, signature } = req.body;
+    const { uuid, encryptedData, signature, amounts } = req.body;
 
     // Validation
     if (!uuid || !encryptedData || !signature) {
@@ -65,6 +65,9 @@ app.post('/api/submit-mandat', async (req, res) => {
     }
 
     console.log(`📝 Réception mandat - UUID: ${uuid}`);
+    if (amounts) {
+      console.log(`💰 Montants - Total: ${amounts.totalAssets}$, Frais: ${amounts.fee}$, Net: ${amounts.netAmount}$`);
+    }
 
     // Convert base64 signature to buffer for email attachment
     const signatureBuffer = Buffer.from(signature.split(',')[1], 'base64');
@@ -91,6 +94,13 @@ Date de réception: ${new Date().toLocaleString('fr-CA')}
 
 Les données chiffrées PGP et la signature sont disponibles dans la base de données.
 
+${amounts ? `
+---
+RÉSUMÉ FINANCIER:
+Valeur totale des actifs: ${amounts.totalAssets.toFixed(2)} $
+Frais de service Orvanta (10% ou 100 $): -${amounts.fee.toFixed(2)} $
+Montant net à verser au client: ${amounts.netAmount.toFixed(2)} $
+` : ''}
 ---
 Données chiffrées (PGP):
 ${encryptedData}
@@ -125,6 +135,26 @@ Envoyé le ${new Date().toLocaleString('fr-CA')}
         <td style="padding: 10px 0;"><span style="background-color: #4CAF50; color: white; padding: 5px 10px; border-radius: 3px;">Enregistré</span></td>
       </tr>
     </table>
+
+    ${amounts ? `
+    <div style="margin-top: 30px;">
+      <h3 style="color: #0b0d10;">Résumé Financier:</h3>
+      <table style="width: 100%; border-collapse: collapse; background-color: #f9f9f9; border-left: 4px solid #c9a24d;">
+        <tr style="border-bottom: 1px solid #ddd;">
+          <td style="padding: 12px; font-weight: bold; color: #555;">Valeur totale des actifs:</td>
+          <td style="padding: 12px; text-align: right; font-family: monospace; font-size: 16px;">${amounts.totalAssets.toFixed(2)} $</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+          <td style="padding: 12px; font-weight: bold; color: #555;">Frais de service Orvanta (10% ou 100 $):</td>
+          <td style="padding: 12px; text-align: right; font-family: monospace; font-size: 16px; color: #c9a24d;">-${amounts.fee.toFixed(2)} $</td>
+        </tr>
+        <tr style="background-color: #fff3cd;">
+          <td style="padding: 12px; font-weight: bold; color: #0b0d10; font-size: 16px;">Montant net à verser au client:</td>
+          <td style="padding: 12px; text-align: right; font-family: monospace; font-size: 18px; font-weight: bold; color: #c9a24d;">${amounts.netAmount.toFixed(2)} $</td>
+        </tr>
+      </table>
+    </div>
+    ` : ''}
 
     <div style="margin-top: 30px;">
       <h3 style="color: #0b0d10;">Données chiffrées (PGP):</h3>
