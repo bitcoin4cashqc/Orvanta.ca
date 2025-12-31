@@ -168,58 +168,46 @@ body {
   border-top: 2px solid var(--border);
 }
 
-.financial-table {
+/* Assets Summary */
+.assets-summary {
   background: var(--bg);
   border: 1px solid var(--border);
-  padding: 24px;
-  border-left: 3px solid var(--accent);
+  padding: 20px;
 }
 
-.financial-row {
+.assets-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
 
-.financial-row:last-child {
+.assets-row:last-child {
   border-bottom: none;
 }
 
-.financial-row.total {
-  margin-top: 10px;
-  padding-top: 18px;
+.assets-row.assets-total {
+  margin-top: 8px;
+  padding-top: 16px;
   border-top: 2px solid var(--accent);
-  font-size: 1.1rem;
 }
 
-.financial-label {
+.assets-label {
   color: var(--muted);
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 0.95rem;
 }
 
-.financial-value {
+.assets-value {
   color: var(--text);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-family: 'Courier New', monospace;
-  font-weight: 500;
 }
 
-.financial-value.fee {
+.assets-total .assets-label,
+.assets-total .assets-value {
   color: var(--accent);
-}
-
-.financial-value.total {
-  color: var(--accent);
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.financial-row.total .financial-label {
-  color: var(--text);
-  font-weight: 600;
+  font-size: 1.15rem;
 }
 
 /* Signature Section */
@@ -385,32 +373,25 @@ body {
 
   .contact-info,
   .signature-display-block,
-  .financial-table {
+  .assets-summary {
     background: #f5f5f5;
     border: 1px solid #333;
-  }
-
-  .contact-info,
-  .financial-table {
-    border-left: 3px solid #333;
   }
 
   .financial-section {
     border-top: 2px solid #333;
   }
 
-  .financial-row {
+  .assets-row {
     border-bottom: 1px solid #333;
   }
 
-  .financial-row.total {
+  .assets-row.assets-total {
     border-top: 2px solid #333;
   }
 
-  .financial-label,
-  .financial-value,
-  .financial-value.fee,
-  .financial-value.total {
+  .assets-label,
+  .assets-value {
     color: #000 !important;
   }
 
@@ -490,27 +471,27 @@ body {
     padding: 0 10px;
   }
 
-  .financial-table {
+  .assets-summary {
     padding: 16px;
   }
 
-  .financial-row {
+  .assets-row {
     flex-direction: column;
     align-items: flex-start;
     padding: 12px 0;
     gap: 6px;
   }
 
-  .financial-label {
+  .assets-label {
     font-size: 0.9rem;
   }
 
-  .financial-value {
-    font-size: 1.1rem;
+  .assets-value {
+    font-size: 1rem;
     align-self: flex-end;
   }
 
-  .financial-value.total {
-    font-size: 1.2rem;
+  .assets-total .assets-value {
+    font-size: 1.1rem;
   }
 }
