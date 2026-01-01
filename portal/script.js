@@ -308,13 +308,23 @@ if (yearSpan) {
 }
 
 // Accordion functionality
-const accordionTrigger = document.getElementById('privacyAccordion');
-const accordionContent = document.getElementById('privacyContent');
+const signingAccordionTrigger = document.getElementById('signingAccordion');
+const signingAccordionContent = document.getElementById('signingContent');
 
-if (accordionTrigger && accordionContent) {
-  accordionTrigger.addEventListener('click', function() {
+if (signingAccordionTrigger && signingAccordionContent) {
+  signingAccordionTrigger.addEventListener('click', function() {
     this.classList.toggle('active');
-    accordionContent.classList.toggle('open');
+    signingAccordionContent.classList.toggle('open');
+  });
+}
+
+const privacyAccordionTrigger = document.getElementById('privacyAccordion');
+const privacyAccordionContent = document.getElementById('privacyContent');
+
+if (privacyAccordionTrigger && privacyAccordionContent) {
+  privacyAccordionTrigger.addEventListener('click', function() {
+    this.classList.toggle('active');
+    privacyAccordionContent.classList.toggle('open');
   });
 }
 
