@@ -309,7 +309,7 @@
         if (contractData.valeur && Array.isArray(contractData.valeur)) {
           const totalAssets = contractData.valeur.reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
           const fee = Math.max(totalAssets * 0.10, 100);
-          const netAmount = totalAssets - fee;
+          const netAmount = Math.max(0, totalAssets - fee); // Ensure non-negative
 
           // Update the financial section
           document.getElementById('totalAssets').textContent = totalAssets.toFixed(2) + ' $';

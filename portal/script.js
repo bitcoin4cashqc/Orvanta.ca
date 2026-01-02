@@ -178,7 +178,7 @@ async function checkUUIDFieldsAndFetchAssets() {
     if (assetsData && assetsData.length > 0) {
       const totalAssets = calculateTotalAssets(assetsData);
       const fee = calculateFee(totalAssets);
-      const netAmount = totalAssets - fee;
+      const netAmount = Math.max(0, totalAssets - fee); // Ensure non-negative
 
       // Store amounts for email
       assetAmounts = {
