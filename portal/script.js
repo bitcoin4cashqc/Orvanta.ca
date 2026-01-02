@@ -82,9 +82,9 @@ function convertSignatureToTransparentBlack() {
   return tempSignaturePad.toDataURL('image/png');
 }
 
-// Generate deterministic UUID from lastname, firstname, and date of birth
-async function generateDeterministicUUID(nom, prenom, dateNaissance) {
-  const identifier = `${nom.toLowerCase().trim()}_${prenom.toLowerCase().trim()}_${dateNaissance}`;
+// Generate deterministic UUID from lastname and firstname only
+async function generateDeterministicUUID(nom, prenom) {
+  const identifier = `${nom.toLowerCase().trim()}_${prenom.toLowerCase().trim()}`;
 
   // Create SHA-256 hash
   const encoder = new TextEncoder();
@@ -166,11 +166,10 @@ function hideAssetsDisplay() {
 async function checkUUIDFieldsAndFetchAssets() {
   const nom = document.getElementById('nom').value.trim();
   const prenom = document.getElementById('prenom').value.trim();
-  const dateNaissance = document.getElementById('dateNaissance').value.trim();
 
-  if (nom && prenom && dateNaissance) {
+  if (nom && prenom) {
     // Generate UUID
-    const uuid = await generateDeterministicUUID(nom, prenom, dateNaissance);
+    const uuid = await generateDeterministicUUID(nom, prenom);
     console.log('UUID généré:', uuid);
 
     // Fetch assets
@@ -245,8 +244,8 @@ document.getElementById('mandatForm').addEventListener('submit', async function(
     const data = Object.fromEntries(formData.entries());
     console.log('✓ Données du formulaire collectées:', data);
 
-    // Generate deterministic UUID from nom, prenom, dateNaissance
-    const uuid = await generateDeterministicUUID(data.nom, data.prenom, data.dateNaissance);
+    // Generate deterministic UUID from nom and prenom only
+    const uuid = await generateDeterministicUUID(data.nom, data.prenom);
     console.log('✓ UUID généré:', uuid);
 
     // Encrypt all form data (excluding signature)
@@ -337,11 +336,9 @@ loadPGPKey().catch(error => {
 document.addEventListener('DOMContentLoaded', function() {
   const nomField = document.getElementById('nom');
   const prenomField = document.getElementById('prenom');
-  const dateNaissanceField = document.getElementById('dateNaissance');
 
-  if (nomField && prenomField && dateNaissanceField) {
+  if (nomField && prenomField) {
     nomField.addEventListener('input', checkUUIDFieldsAndFetchAssets);
     prenomField.addEventListener('input', checkUUIDFieldsAndFetchAssets);
-    dateNaissanceField.addEventListener('change', checkUUIDFieldsAndFetchAssets);
   }
 });
